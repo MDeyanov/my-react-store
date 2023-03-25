@@ -1,3 +1,4 @@
+import React from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
@@ -19,53 +20,58 @@ export const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link>
+            <Nav.Item>
               <Link to="/products">Products</Link>
-            </Nav.Link>
+            </Nav.Item>
           </Nav>
           {isAuthenticated && !isAdmin && (
             <Nav>
-              <Nav.Link>
+              <Nav.Item>
                 <Link to="/cart">
                   <FaShoppingCart size={20} />
                 </Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item>
+              &nbsp;
+              &nbsp; 
+              &nbsp;  
+              <Nav.Item style={{ color: 'white' }}>
                 Signed in as: <Link to="/random">{userEmail}</Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item>
+              &nbsp; 
+              <Nav.Item>
                 <Link to="/logout" style={{ color: 'red' }}>
                   Logout
                 </Link>
-              </Nav.Link>
+              </Nav.Item>
             </Nav>
           )}
           {isAdmin && (
             <Nav>
-              <Nav.Link>
+              <Nav.Item>
                 <Link to="/admin/dashboard">Dashboard</Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Link to="/admin/products">Products</Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Link to="/admin/orders">Orders</Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Link to="/logout" style={{ color: 'red' }}>
                   Logout
                 </Link>
-              </Nav.Link>
+              </Nav.Item>
             </Nav>
           )}
           {!isAuthenticated && (
             <Nav>
-              <Nav.Link>
+              <Nav.Item>
                 <Link to="/login">Login</Link>
-              </Nav.Link>
-              <Nav.Link>
+              </Nav.Item> 
+              &nbsp;           
+              <Nav.Item>
                 <Link to="/register">Register</Link>
-              </Nav.Link>
+              </Nav.Item>
             </Nav>
           )}
         </Navbar.Collapse>
@@ -73,4 +79,3 @@ export const NavBar = () => {
     </Navbar>
   );
 };
-
