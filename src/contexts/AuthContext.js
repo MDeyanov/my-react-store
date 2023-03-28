@@ -5,7 +5,9 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 
 import { authServiceFactory } from '../services/authService';
 
+
 export const AuthContext = createContext();
+
 
 export const AuthProvider = ({
     children,
@@ -13,15 +15,19 @@ export const AuthProvider = ({
     const [auth, setAuth] = useLocalStorage('auth', {});
     const navigate = useNavigate();
 
-    const authService = authServiceFactory(auth.accessToken)
+    const authService = authServiceFactory(auth.accessToken);
+    
+
 
     const onLoginSubmit = async (data) => {
         try {
             const result = await authService.login(data);
 
-            setAuth(result);
 
-            navigate('/products');
+            setAuth(result);
+            
+
+            navigate('/');
         } catch (error) {
             console.log('Something went wrong');
         }
@@ -71,6 +77,6 @@ export const AuthProvider = ({
 
 export const useAuthContext = () => {
     const context = useContext(AuthContext);
-
+    
     return context;
 };
