@@ -7,39 +7,41 @@ import { Footer } from './components/Footer/Footer';
 import { Login } from './components/Login/Login';
 import { Logout } from './components/Logout/Logout';
 import { Register } from './components/Register/Register';
-import { Products } from "./components/Products/Products";
+import { Paintings } from "./components/Paintings/Paintings";
 
 
 import { AuthProvider } from './contexts/AuthContext';
 import { NotificationContext } from './contexts/NotificationContext';
-import { productServiceFactory } from "./services/productService";
+import { paintingServiceFactory } from "./services/paintingService";
 import { CreateProduct } from "./components/CreateProduct/CreateProduct";
+import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
 
 function App() {
     const [status, setStatus] = useState(false);
-    const [products, setProducts] = useState([]);
-    const productService = productServiceFactory();
+    
+    const [paintings, setPaintings] = useState([]);
+    const paintingService = paintingServiceFactory();
 
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
 
 
-    //products
+    //paintings
     useEffect(() => {
-        productService.getAll()
+        paintingService.getAll()
             .then(result => {
-                setProducts(result)
+                setPaintings(result)
             })
     }, []);
 
     const onCreateProductSubmit = async (data) => {
-        const newProduct = await productService.create(data);
+        const newPaintings = await paintingService.create(data);
 
-        setProducts(state => [...state, newProduct]);
+        setPaintings(state => [...state, newPaintings]);
 
     };
 
-    //products
+    //paintings
 
     //notifications
     const showMessage = (message, messageType) => {
@@ -77,7 +79,8 @@ function App() {
                                 <Route path='/logout' element={<Logout />} />
                                 <Route path='/register' element={<Register />} />
                                 <Route path='/create-product' element={<CreateProduct onCreateProductSubmit={onCreateProductSubmit}/>} />
-                                <Route path='/products' element={<Products products={products}/>} />
+                                <Route path='/paintings' element={<Paintings paintings={paintings}/>} />
+                                <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
                             </Routes>
                         </main>
                         <Footer />

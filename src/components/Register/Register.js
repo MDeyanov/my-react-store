@@ -1,10 +1,10 @@
-import React from 'react';
-import { useContext } from "react";
+import React,{useEffect,useContext} from 'react';
 import { Link } from "react-router-dom";
 import { Form, Button, Container } from "react-bootstrap";
 
 import { useForm } from "../../hooks/useForm";
 import { AuthContext } from "../../contexts/AuthContext";
+import { NotificationContext } from '../../contexts/NotificationContext';
 
 const RegisterFormKeys = {
   Email: "email",
@@ -13,6 +13,8 @@ const RegisterFormKeys = {
 };
 
 export const Register = () => {
+  const notifications = useContext(NotificationContext);
+
   const { onRegisterSubmit } = useContext(AuthContext);
   const { values, changeHandler, onSubmit } = useForm(
     {
@@ -22,6 +24,12 @@ export const Register = () => {
     },
     onRegisterSubmit
   );
+
+  useEffect(() => {
+    return () =>{
+        notifications.showMessage('You registered successfully!', 'success');
+    }
+}, []);
 
   return (
     <Container className="auth">
