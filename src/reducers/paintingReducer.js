@@ -15,7 +15,9 @@ export const paintingReducer = (state, action) => {
                         }
                     }
                 ],
-            }
+            };
+            case 'PAINTING_DELETE':
+                return {};
         default:
             return state;
     }

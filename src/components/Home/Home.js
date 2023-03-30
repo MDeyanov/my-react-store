@@ -6,13 +6,7 @@ import video from '../../utils/newvideo.mp4';
 
 export const Home = () => {
   return (
-    <section className={HomeCSS.showcase}>
-      <header>
-        <h2 className={HomeCSS.logo}>
-          <img className={HomeCSS.imgLogo} src="https://res.cloudinary.com/dzac3ggur/image/upload/v1680037348/Logo_dpfyps.png" alt="the logo" />
-        </h2>
-        {/* <div className={HomeCSS.toggle}></div> */}
-      </header>
+    <section className={HomeCSS.showcase}>      
       <video autoPlay loop muted>
         <source src={video} type="video/mp4"/> 
       </video>
