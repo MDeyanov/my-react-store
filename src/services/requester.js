@@ -13,11 +13,16 @@ const requester = async (method, token, url, data) => {
         }
     }
 
-    if (token) {
-        options.headers = {
-            ...options.headers,
-            'X-Authorization': token,
-        };
+    const serializedAuth = localStorage.getItem('auth');
+    if (serializedAuth) {
+        const auth = JSON.parse(serializedAuth);
+        
+        if (auth.accessToken) {
+            options.headers = {
+                ...options.headers,
+                'X-Authorization': auth.accessToken,
+            };
+        }
     }
 
     const response = await fetch(url, options);

@@ -45,13 +45,13 @@ export const PaintingDetails = () => {
 
     const onDeleteClick = async () => {
 
-       
+        const result = window.confirm(`Are you sure you want to delete ${painting.title}`);
+        if (result) {
             await paintingService.delete(painting._id);
             /* dispatch({ type: 'PAINTING_DELETE', payload: painting._id }); */
-
             deletePainting(painting._id);
             navigate('/paintings');
-
+        }
     };
 
     return (

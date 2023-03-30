@@ -5,14 +5,14 @@ import { usePaintingContext } from '../../contexts/PaintingContext';
 
 
 export const CreateProduct = () => {   
-    const { onCreateProductSubmit } = usePaintingContext();
+    const { onCreatePaintingSubmit } = usePaintingContext();
     const { values, changeHandler, onSubmit } = useForm({
         title: '',
         size: '',
         price: '',
         imageUrl: '',
         summary: '',
-    }, onCreateProductSubmit);
+    }, onCreatePaintingSubmit);
 
     return (
         <Form id="create" method="post" onSubmit={onSubmit}>

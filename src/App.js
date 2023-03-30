@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { NavBar } from './components/NavBar/NavBar';
 import { Home } from './components/Home/Home';
@@ -16,6 +16,7 @@ import { paintingServiceFactory } from "./services/paintingService";
 import { CreateProduct } from "./components/CreateProduct/CreateProduct";
 import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
 import { PaintingProvider } from "./contexts/PaintingContext";
+import { RouteGuard } from "./components/common/RouteGuard";
 
 function App() {
     const [status, setStatus] = useState(false);
@@ -59,37 +60,38 @@ function App() {
     //notifications
 
     return (
-        <BrowserRouter>
-            <AuthProvider>
-                <PaintingProvider>
-                    <NotificationContext.Provider
-                        value={{
-                            status,
-                            message,
-                            messageType,
-                            showMessage,
-                            clearMessage
-                        }}
-                    >
-                        <div className="App">
-                            <NavBar />
-                            <main id="main-content">
-                                <Routes>
-                                    <Route path="/" element={<Home />} />
-                                    <Route path='/login' element={<Login />} />
-                                    <Route path='/logout' element={<Logout />} />
-                                    <Route path='/register' element={<Register />} />
+        <AuthProvider>
+            <PaintingProvider>
+                <NotificationContext.Provider
+                    value={{
+                        status,
+                        message,
+                        messageType,
+                        showMessage,
+                        clearMessage
+                    }}
+                >
+                    <div className="App">
+                        <NavBar />
+                        <main id="main-content">
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path='/login' element={<Login />} />
+                                <Route path='/logout' element={<Logout />} />
+                                <Route path='/register' element={<Register />} />
+                                <Route path='/paintings' element={<Paintings paintings={paintings} />} />
+                                <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
+                                <Route element={<RouteGuard />}>
                                     <Route path='/create-product' element={<CreateProduct onCreateProductSubmit={onCreateProductSubmit} />} />
-                                    <Route path='/paintings' element={<Paintings paintings={paintings} />} />
-                                    <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
-                                </Routes>
-                            </main>
-                            <Footer />
-                        </div>
-                    </NotificationContext.Provider>
-                </PaintingProvider>
-            </AuthProvider>
-        </BrowserRouter>
+                                    <Route path='/logout' element={<Logout />} />
+                                </Route>
+                            </Routes>
+                        </main>
+                        <Footer />
+                    </div>
+                </NotificationContext.Provider>
+            </PaintingProvider>
+        </AuthProvider>
     );
 }
 
