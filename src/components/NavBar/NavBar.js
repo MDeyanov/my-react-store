@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Image } from 'react-bootstrap';
 import { FaShoppingCart } from 'react-icons/fa';
 
 import { AuthContext } from '../../contexts/AuthContext';
-import  PopUp  from '../Notifications/Notifications';
+import PopUp from '../Notifications/Notifications';
+import style from './NavBar.module.css';
 
 export const NavBar = () => {
   const { isAuthenticated, userEmail, isAdmin } = useContext(AuthContext);
@@ -23,8 +24,9 @@ export const NavBar = () => {
       <Navbar bg="dark" variant="dark" expand="lg" >
         <Container fluid>
           <Navbar.Brand >
-            <Link className="home" to="/" style={{ color: 'white', textDecoration: 'none' }}>
-              React Online Store
+            <Link className={style.logo} to="/">
+              <Image src="https://res.cloudinary.com/dzac3ggur/image/upload/v1680037348/Logo_dpfyps.png" alt="the logo" width="30" height="30" className="d-inline-block align-top" />
+              Dimitrova ART Gallery
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -92,7 +94,7 @@ export const NavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      {showNotification()}     
+      {showNotification()}
     </nav>
   );
 };

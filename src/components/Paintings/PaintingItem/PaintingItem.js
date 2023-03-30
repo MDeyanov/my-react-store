@@ -1,21 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
-export const PaintingItem = ({
-    _id,
-    title,
-    price,
-    imageUrl,
-}) => {
-    return (
-        <div className="allPaintings">
-            <div className="allPaintings-info">
-                <img src={imageUrl} alt="paintings"/>
-               {/*  <h6>Category: {category}</h6> */}
-                <h2>Title: {title}</h2>
-                <h2>Price: {price}$</h2>
-                <Link to={`/paintings/${_id}`} className="details-button">Details</Link>
-            </div>
-        </div>
-    );
+export const PaintingItem = ({ _id, title, price, imageUrl }) => {
+  return (
+    <div className="col-md-3 mb-4">
+      <Card style={{ width: "18rem" }}>
+        <Card.Img variant="top" src={imageUrl} alt={title} />
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text>Price: {price}$</Card.Text>
+          <Link to={`/paintings/${_id}`} className="btn btn-primary">Details</Link>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 };

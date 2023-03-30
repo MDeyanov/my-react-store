@@ -1,97 +1,103 @@
-import React, { useEffect, useReducer } from "react";
-import { useNavigate, useParams,Link } from "react-router-dom"
-import { useAuthContext } from "../../contexts/AuthContext";
-import { paintingReducer } from "../../reducers/paintingReducer";
-import { paintingServiceFactory } from "../../services/paintingService";
-import * as reviewService from "../../services/reviewService";
-import { AddReview } from "./AddReview/AddReview";
-import {useService} from "../../hooks/useService";
+import React, { useEffect, useReducer, useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../contexts/AuthContext';
+import { paintingReducer } from '../../reducers/paintingReducer';
+import { paintingServiceFactory } from '../../services/paintingService';
+import * as reviewService from '../../services/reviewService';
+import { AddReview } from './AddReview/AddReview';
+import { useService } from '../../hooks/useService';
+import { Container, Row, Col, Image, Button } from 'react-bootstrap';
+import { usePaintingContext } from '../../contexts/PaintingContext';
 
 export const PaintingDetails = () => {
-    const { paintingId } = useParams;
-    const { userId, isAuthenticated, userEmail } = useAuthContext;
-    const [painting, dispatch] = useReducer(paintingReducer, {});
+    const { paintingId } = useParams();
+    const { userId, isAuthenticated, userEmail } = useAuthContext();
+    const { deletePainting } = usePaintingContext();
     const paintingService = useService(paintingServiceFactory);
+    const [painting, dispatch] = useReducer(paintingReducer, {});
+    const [reviews, setReviews] = useState([]);
     const navigate = useNavigate();
-
-     console.log("im in painting details");
-     console.log(painting.size);
 
     useEffect(() => {
         Promise.all([
             paintingService.getOne(paintingId),
-            reviewService.getAll(paintingId),
-        ]).then(([paintingData, reviews]) => {
-            const paintingState = {
-                ...paintingData,
-                reviews,
-            };
-
-            dispatch({ type: 'PAINTING_FETCH', payload: paintingState })
+            reviewService.getAll(paintingId)
+        ]).then(([paintingData, reviewsData]) => {
+            const paintingState = { ...paintingData, reviews: reviewsData };
+            dispatch({ type: 'PAINTING_FETCH', payload: paintingState });
+            setReviews(reviewsData);
         });
     }, [paintingId]);
 
     const onReviewSubmit = async (values) => {
-        const response = await paintingService.create(paintingId, values.review);
+        const response = await reviewService.create(paintingId, values.review);
 
-        dispatch({
-            type: 'REVIEW_ADD',
-            payload: response,
-            userEmail,
-        });
+        const newReview = {
+            _id: response._id,
+            author: { email: userEmail },
+            review: response.review
+        };
+
+        setReviews([...reviews, newReview]);
     };
 
     const isOwner = painting._ownerId === userId;
 
     const onDeleteClick = async () => {
-        await paintingService.delete(painting._id);
 
-        // TODO: delete from state
+       
+            await paintingService.delete(painting._id);
+            /* dispatch({ type: 'PAINTING_DELETE', payload: painting._id }); */
 
-        navigate('/paintings');
+            deletePainting(painting._id);
+            navigate('/paintings');
+
     };
 
     return (
-        
-        <section id="painting-details">
+        <Container id='painting-details' className="border border-secondary rounded p-4">
             <h1>Painting Details</h1>
-            <div className="info-section">
-
-                <div className="painting-header">
-                    <img className="painting-img" src={painting.imageUrl} alt="random" />
+            <Row>
+                <Col sm={12} md={6} lg={4}>
+                    <Image src={painting.imageUrl} alt={painting.title} fluid />
+                </Col>
+                <Col sm={12} md={6} lg={8}>
                     <h1>{painting.title}</h1>
-                    <span className="size">Size: {painting.size}</span>
-                    <p className="type">{painting.price}</p>
-                </div>
-
-                <p className="text">{painting.summary}</p>
-
-                <div className="details-reviews">
-                    <h2>Reviews:</h2>
-                    <ul>
-                        {painting.reviews && painting.reviews.map(x => (
-                            <li key={x._id} className="reviews">
-                                <p>{x.author.email}: {x.review}</p>
-                            </li>
-                        ))}
-                    </ul>
-
-
-
-                    {!painting.reviews &&  (
-                        <p className="no-review">No reviews.</p>
+                    <p className='mb-0'>Size: {painting.size}</p>
+                    <p className='mb-4'>Price: {painting.price}</p>
+                    <p>{painting.summary}</p>
+                    {isOwner && (
+                        <div className='mb-4'>
+                            <Link to={`/paintings/${painting._id}/edit`} className='mr-2'>
+                                <Button>Edit</Button>
+                            </Link>
+                            <Button variant='danger' onClick={onDeleteClick}>
+                                Delete
+                            </Button>
+                        </div>
                     )}
-                </div>
-
-                {isOwner && (
-                    <div className="buttons">
-                        <Link to={`/paintings/${painting._id}/edit`} className="button">Edit</Link>
-                        <button className="button" onClick={onDeleteClick}>Delete</button>
-                    </div>
-                )}
-            </div>
-
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <h2 className='mt-4'>Reviews:</h2>
+                    <ul className='list-unstyled'>
+                        {reviews &&
+                            reviews.map((review) => (
+                                <li key={review._id} className='border border-secondary rounded p-3 mb-3'>
+                                    <p className='mb-0'>
+                                        <span className="font-weight-bold fs-5 text-primary">{review.author.email}:</span>
+                                        &nbsp;
+                                        <span className="ml-2">{review.review}</span>
+                                    </p>
+                                </li>
+                            ))}
+                    </ul>
+                    {!reviews && <p className='no-review'>No reviews.</p>}
+                </Col>
+            </Row>
             {isAuthenticated && <AddReview onReviewSubmit={onReviewSubmit} />}
-        </section>
+
+        </Container >
     );
 };

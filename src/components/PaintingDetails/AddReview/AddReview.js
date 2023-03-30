@@ -1,4 +1,6 @@
 import React from "react";
+import { Form, Button } from 'react-bootstrap';
+
 import { useForm } from "../../../hooks/useForm";
 
 export const AddReview = ({
@@ -9,12 +11,21 @@ export const AddReview = ({
     }, onReviewSubmit);
 
     return (
-        <article className="create-review">
-            <label>Add new review:</label>
-            <form className="form" onSubmit={onSubmit}>
-                <textarea name="review" placeholder="Review......" value={values.review} onChange={changeHandler}></textarea>
-                <input className="btn submit" type="submit" value="Add Review" />
-            </form>
-        </article>
+        <Form onSubmit={onSubmit}>
+            <Form.Group controlId="formBasicReview">
+                <Form.Label>Add new review:</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="review"
+                    placeholder="Enter review"
+                    value={values.review}
+                    onChange={changeHandler}
+                />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+                Add Review
+            </Button>
+        </Form>
     );
 };

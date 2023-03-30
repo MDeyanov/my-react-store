@@ -15,10 +15,11 @@ import { NotificationContext } from './contexts/NotificationContext';
 import { paintingServiceFactory } from "./services/paintingService";
 import { CreateProduct } from "./components/CreateProduct/CreateProduct";
 import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
+import { PaintingProvider } from "./contexts/PaintingContext";
 
 function App() {
     const [status, setStatus] = useState(false);
-    
+
     const [paintings, setPaintings] = useState([]);
     const paintingService = paintingServiceFactory();
 
@@ -60,32 +61,33 @@ function App() {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <NotificationContext.Provider
-                    value={{
-                        status,
-                        message,
-                        messageType,
-                        showMessage,
-                        clearMessage
-                    }}
-                >
-
-                    <div className="App">
-                        <NavBar />
-                        <main id="main-content">
-                            <Routes>
-                                <Route path="/" element={<Home />} />
-                                <Route path='/login' element={<Login />} />
-                                <Route path='/logout' element={<Logout />} />
-                                <Route path='/register' element={<Register />} />
-                                <Route path='/create-product' element={<CreateProduct onCreateProductSubmit={onCreateProductSubmit}/>} />
-                                <Route path='/paintings' element={<Paintings paintings={paintings}/>} />
-                                <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
-                            </Routes>
-                        </main>
-                        <Footer />
-                    </div>
-                </NotificationContext.Provider>
+                <PaintingProvider>
+                    <NotificationContext.Provider
+                        value={{
+                            status,
+                            message,
+                            messageType,
+                            showMessage,
+                            clearMessage
+                        }}
+                    >
+                        <div className="App">
+                            <NavBar />
+                            <main id="main-content">
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path='/login' element={<Login />} />
+                                    <Route path='/logout' element={<Logout />} />
+                                    <Route path='/register' element={<Register />} />
+                                    <Route path='/create-product' element={<CreateProduct onCreateProductSubmit={onCreateProductSubmit} />} />
+                                    <Route path='/paintings' element={<Paintings paintings={paintings} />} />
+                                    <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
+                                </Routes>
+                            </main>
+                            <Footer />
+                        </div>
+                    </NotificationContext.Provider>
+                </PaintingProvider>
             </AuthProvider>
         </BrowserRouter>
     );
