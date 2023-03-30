@@ -25,7 +25,6 @@ export const AuthProvider = ({
 
 
             setAuth(result);
-            
 
             navigate('/');
         } catch (error) {

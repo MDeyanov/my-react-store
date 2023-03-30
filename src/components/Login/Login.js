@@ -22,6 +22,7 @@ export const Login = () => {
 
     useEffect(() => {
         return () =>{
+            
             notifications.showMessage('Logged in successfully!', 'success');
         }
     }, []);
