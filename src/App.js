@@ -8,15 +8,17 @@ import { Login } from './components/Login/Login';
 import { Logout } from './components/Logout/Logout';
 import { Register } from './components/Register/Register';
 import { Paintings } from "./components/Paintings/Paintings";
+import { CreateProduct } from "./components/CreateProduct/CreateProduct";
+import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
+import { EditPainting } from "./components/EditPainting/EditPainting";
+import { RouteGuard } from "./components/common/RouteGuard";
+import { PaintingOwner } from "./components/common/PaintingOwner";
 
 
 import { AuthProvider } from './contexts/AuthContext';
 import { NotificationContext } from './contexts/NotificationContext';
 import { paintingServiceFactory } from "./services/paintingService";
-import { CreateProduct } from "./components/CreateProduct/CreateProduct";
-import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
 import { PaintingProvider } from "./contexts/PaintingContext";
-import { RouteGuard } from "./components/common/RouteGuard";
 
 function App() {
     const [status, setStatus] = useState(false);
@@ -82,6 +84,11 @@ function App() {
                                 <Route path='/paintings' element={<Paintings paintings={paintings} />} />
                                 <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
                                 <Route element={<RouteGuard />}>
+                                    <Route path='/paintings/:paintingId/edit' element={
+                                        <PaintingOwner>
+                                            <EditPainting />
+                                        </PaintingOwner>
+                                    } />
                                     <Route path='/create-product' element={<CreateProduct onCreateProductSubmit={onCreateProductSubmit} />} />
                                     <Route path='/logout' element={<Logout />} />
                                 </Route>

@@ -35,6 +35,12 @@ export const NavBar = () => {
               <Nav.Item>
                 <Link to="/paintings" style={{ color: 'white', textDecoration: 'none' }}>Paintings</Link >
               </Nav.Item>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <Nav.Item>
+                <Link to="/create-product" style={{ color: 'white', textDecoration: 'none' }}>Create</Link >
+              </Nav.Item>
             </Nav>
             {isAuthenticated && !isAdmin && (
               <Nav>
