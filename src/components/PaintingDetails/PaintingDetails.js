@@ -71,6 +71,9 @@ export const PaintingDetails = () => {
                             <Link to={`/paintings/${painting._id}/edit`} className='mr-2'>
                                 <Button>Edit</Button>
                             </Link>
+                            &nbsp;
+                            &nbsp;
+                            &nbsp;
                             <Button variant='danger' onClick={onDeleteClick}>
                                 Delete
                             </Button>
@@ -80,7 +83,7 @@ export const PaintingDetails = () => {
             </Row>
             <Row>
                 <Col>
-                    <h2 className='mt-4'>Reviews:</h2>
+                    <h5 className='mt-4'>Reviews:</h5>
                     <ul className='list-unstyled'>
                         {reviews &&
                             reviews.map((review) => (

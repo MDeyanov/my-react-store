@@ -81,6 +81,7 @@ header .textLogo{
   object-fit: cover;
   opacity: 0.8;
 }
+
 .overlay {
   position: absolute;
   top: 0;
@@ -90,6 +91,7 @@ header .textLogo{
   background: #03a9f4;
   mix-blend-mode: overlay;
 }
+
 .text {
   position: relative;
   z-index: 10;
