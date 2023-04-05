@@ -31,8 +31,10 @@ export const EditPainting = () => {
                 uploadPreset: "react-course",
             },
             (error, result) => {
-                if (result.event === "success" && result.info.url !== undefined) {
+                if (result.event === "success" && result.info.url !== undefined) { 
+                    values.imageUrl=imageUrl;                 
                     setImageUrl(result.info.url);
+                    values.imageUrl= result.info.url;
                 }
             }
         );
@@ -91,7 +93,7 @@ export const EditPainting = () => {
                         id="imageUrl"
                         name="imageUrl"
                         onChange={changeHandler}
-                        value={values.imageUrl = imageUrl}
+                        value={values.imageUrl}
                         disabled
                     />
                     <Button variant="primary" onClick={openWidget} type="button">
