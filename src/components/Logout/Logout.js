@@ -1,5 +1,4 @@
-import React from 'react';
-import { useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { NotificationContext } from '../../contexts/NotificationContext';
 
@@ -14,5 +13,5 @@ export const Logout = () => {
         notifications.showMessage('Logged out successfully!', 'success');
     }, [onLogout]);
 
-    return <Navigate to="/" /> 
+    return <Navigate to="/" />
 };
