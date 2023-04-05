@@ -24,6 +24,7 @@ const PopUp = () => {
         }, 3500);
         return popUpNotification();
     }
+    
 
     return notificationContext.status ? showNotification() : null;
 };

@@ -14,7 +14,6 @@ export const AuthProvider = ({
 }) => {
     const [auth, setAuth] = useLocalStorage('auth', {});
     const navigate = useNavigate();
-
     const authService = authServiceFactory(auth.accessToken);
     
 
@@ -25,7 +24,6 @@ export const AuthProvider = ({
 
 
             setAuth(result);
-
             navigate('/');
         } catch (error) {
             console.log('Something went wrong');
