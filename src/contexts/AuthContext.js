@@ -41,7 +41,7 @@ export const AuthProvider = ({
 
             setAuth(result);
 
-            navigate('/products');
+            navigate('/');
         } catch (error) {
             console.log('Something went wrong');
         }
