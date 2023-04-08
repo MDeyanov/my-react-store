@@ -14,6 +14,7 @@ import { PaintingDetails } from "./components/PaintingDetails/PaintingDetails";
 import { EditPainting } from "./components/EditPainting/EditPainting";
 import { RouteGuard } from "./components/common/RouteGuard";
 import { PaintingOwner } from "./components/common/PaintingOwner";
+import { GuestRouteGuard } from "./components/common/GuestRouteGuard";
 
 
 import { AuthProvider } from './contexts/AuthContext';
@@ -79,9 +80,10 @@ function App() {
                         <main id="main-content">
                             <Routes>
                                 <Route path="/" element={<Home />} />
-                                <Route path='/login' element={<Login />} />
-                                <Route path='/logout' element={<Logout />} />
-                                <Route path='/register' element={<Register />} />
+                                <Route element={<GuestRouteGuard />}>
+                                    <Route path='/login' element={<Login />} />
+                                    <Route path='/register' element={<Register />} />
+                                </Route>
                                 <Route path='/paintings' element={<Paintings paintings={paintings} />} />
                                 <Route path='/paintings/:paintingId' element={<PaintingDetails />} />
                                 <Route element={<RouteGuard />}>

@@ -1,14 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Image } from 'react-bootstrap';
-import { FaShoppingCart } from 'react-icons/fa';
 
 import { AuthContext } from '../../contexts/AuthContext';
 import PopUp from '../Notifications/Notifications';
 import style from './NavBar.module.css';
 
 export const NavBar = () => {
-  const { isAuthenticated, userEmail, isAdmin } = useContext(AuthContext);
+  const { isAuthenticated, userEmail} = useContext(AuthContext);
 
   const showNotification = () => {
     return <PopUp />;
@@ -42,18 +41,10 @@ export const NavBar = () => {
                 <Link to="/create-product" style={{ color: 'white', textDecoration: 'none' }}>Create</Link >
               </Nav.Item>
             </Nav>
-            {isAuthenticated && !isAdmin && (
+            {isAuthenticated &&(
               <Nav>
-                <Nav.Item>
-                  <Link to="/cart">
-                    <FaShoppingCart size={20} />
-                  </Link>
-                </Nav.Item>
-                &nbsp;
-                &nbsp;
-                &nbsp;
                 <Nav.Item style={{ color: 'white' }}>
-                  Signed in as: <Link to="/random" style={{ color: 'light blue', textDecoration: 'none' }}>{userEmail}</Link>
+                  Signed in as: <Link to="/" style={{ color: 'light blue', textDecoration: 'none' }}>{userEmail}</Link>
                 </Nav.Item>
                 &nbsp;
                 &nbsp;
@@ -63,27 +54,7 @@ export const NavBar = () => {
                   </Link>
                 </Nav.Item>
               </Nav>
-            )}
-            {isAdmin && (
-              <Nav>
-                <Nav.Item>
-                  <Link to="/admin/dashboard">Dashboard</Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Link to="/admin/products">Products</Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Link to="/admin/orders">Orders</Link>
-                </Nav.Item>
-                &nbsp;
-                &nbsp;
-                <Nav.Item>
-                  <Link className="fw-normal" to="/logout" style={{ color: 'red', textDecoration: 'none' }}>
-                    Logout
-                  </Link>
-                </Nav.Item>
-              </Nav>
-            )}
+            )}         
             {!isAuthenticated && (
               <Nav>
                 <Nav.Item>

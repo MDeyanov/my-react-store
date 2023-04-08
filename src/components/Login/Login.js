@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'; 
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -21,6 +21,9 @@ export const Login = () => {
         [LoginFormKeys.Password]: '',
     }, onLoginSubmit);
 
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+
     useEffect(() => {
         return () => {
 
@@ -28,12 +31,42 @@ export const Login = () => {
         }
     }, []);
 
+    const validateForm = () => {
+        let isValid = true;
+
+        if (!values[LoginFormKeys.Email].trim()) {
+            setEmailError("Email is required");
+            isValid = false;
+        } else if (!/^\S+@\S+\.\S+$/.test(values[LoginFormKeys.Email])) {
+            setEmailError("Please enter a valid email address");
+            isValid = false;
+        } else {
+            setEmailError("");
+        }
+
+        if (!values[LoginFormKeys.Password].trim()) {
+            setPasswordError("Password is required");
+            isValid = false;
+        } else {
+            setPasswordError("");
+        }
+
+        return isValid;
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (validateForm()) {
+            onSubmit();
+        }
+    };
+
 
 
     return (
         <div className={styles.container}>
             <section id="login-page" className="auth">
-                <Form id="login" method="POST" onSubmit={onSubmit}>
+                <Form id="login" method="POST" onSubmit={handleSubmit}>
                     <div className="container">
                         <div className="brand-logo"></div>
                         <h1>Login</h1>
@@ -45,7 +78,20 @@ export const Login = () => {
                                 name={LoginFormKeys.Email}
                                 value={values[LoginFormKeys.Email]}
                                 onChange={changeHandler}
+                                onBlur={() => {
+                                    if (!values[LoginFormKeys.Email].trim()) {
+                                        setEmailError("Email is required");
+                                    } else if (!/^\S+@\S+\.\S+$/.test(values[LoginFormKeys.Email])) {
+
+                                    } else {
+                                        setEmailError("");
+                                    }
+                                }}
                             />
+                            {emailError && (
+                                <div className="text-danger">{emailError}</div>
+                            )}
+
                         </Form.Group>
 
                         <Form.Group controlId="formBasicPassword">
@@ -56,9 +102,19 @@ export const Login = () => {
                                 name={LoginFormKeys.Password}
                                 value={values[LoginFormKeys.Password]}
                                 onChange={changeHandler}
+                                onBlur={() => {
+                                    if (!values[LoginFormKeys.Password].trim()) {
+                                        setPasswordError("Password is required");
+                                    } else {
+                                        setPasswordError("");
+                                    }
+                                }}
                             />
+                            {passwordError && (
+                                <div className="text-danger">{passwordError}</div>
+                            )}
                         </Form.Group>
-                        <Button  variant="primary" type="submit">
+                        <Button variant="primary" type="submit">
                             Login
                         </Button>
                         <p className="field">
